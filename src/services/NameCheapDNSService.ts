@@ -15,8 +15,9 @@ export class NamecheapDNSService {
   private readonly username = namecheapConfig.userName;
   private readonly baseUrl = namecheapConfig.apiUrl;
 
-  public async setARecord(domain: string, ip: string, hostName: string = '@', ttl: number = 1800): Promise<SetARecordResult> {
+    public async setARecord(domain: string, ip: string, hostName: string = '@', ttl: number = 1800): Promise<SetARecordResult> {
     const { sld, tld } = this.splitDomain(domain);
+
     const params: Record<string, string> = {
       apiuser: this.apiUser,
       apikey: this.apiKey,
@@ -32,12 +33,25 @@ export class NamecheapDNSService {
     };
 
     try {
+      console.log('[NamecheapDNS] Request params:', params);
+
       const response = await axios.get(this.baseUrl, { params });
+
+      console.log('[NamecheapDNS] Raw XML response:', response.data);
+
       const parsed = await parseStringPromise(response.data);
+
+      console.log('[NamecheapDNS] Parsed response:', JSON.stringify(parsed, null, 2));
+
       const isSuccess =
         parsed.ApiResponse?.CommandResponse?.[0]?.DomainDNSSetHostsResult?.[0]?.$.IsSuccess === 'true';
+
+      console.log('[NamecheapDNS] isSuccess:', isSuccess);
+
       return { isSuccess, errors: [], rawXml: response.data };
     } catch (err: any) {
+      console.error('[NamecheapDNS] ERROR:', err.message);
+
       return { isSuccess: false, errors: [err.message], rawXml: '' };
     }
   }
