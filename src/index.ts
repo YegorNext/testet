@@ -1,17 +1,11 @@
 import 'dotenv/config';
 
-
-
 import express, { Express, Request, Response, NextFunction } from 'express';
 import { createServer, Server } from 'http';
 
 import helmet from 'helmet';
 //import cors from 'cors';
 import morgan from 'morgan';
-
-import swaggerUI from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
-import { swaggerOptions } from './swagger';
 
 import domainRouter from './routes/domain.routes';
 
@@ -47,10 +41,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 app.use('/api/domain', domainRouter);
 
-
-//Swagger
-const specs = swaggerJSDoc(swaggerOptions);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 const server: Server = createServer(app);
 
