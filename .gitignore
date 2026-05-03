@@ -1,0 +1,11 @@
+# Dirs
+node_modules
+dist
+
+# Env vars
+.env
+/src/generated/prisma
+
+
+*.toml
+.idea

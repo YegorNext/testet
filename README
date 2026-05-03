@@ -1,0 +1,21 @@
+# Database setup in docker
+docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=test -p 5432:5432 -d postgres
+
+
+# init prisma
+npx prisma init
+
+# migration
+npx prisma migrate dev --name <name> or init
+
+#generate prisma
+npx prisma generate
+
+# migration in prod
+npx prisma migrate deploy
+
+# migration in dev
+npx prisma migrate dev
+
+# Visualize db
+npx prisma studio

@@ -1,0 +1,18 @@
+2026-03-01 22:31:33 [ERROR]: Error checking domain google.com: Cannot read properties of undefined (reading '0')
+2026-03-01 22:31:47 [ERROR]: Error checking domain googlgdsgsde.com: Cannot read properties of undefined (reading '0')
+2026-03-01 22:31:57 [ERROR]: Error checking domain oosglgdsgsde.com: Cannot read properties of undefined (reading '0')
+2026-03-01 22:32:19 [ERROR]: Error checking domain oosglgdsgsde.com: Cannot read properties of undefined (reading '0')
+2026-03-01 22:37:11 [ERROR]: Unexpected response from NameCheap API
+2026-03-01 22:38:46 [ERROR]: Unexpected response from NameCheap API
+2026-03-01 22:42:07 [INFO]: NameCheap API response for domain check: <?xml version="1.0" encoding="utf-8"?>
+<ApiResponse Status="ERROR" xmlns="http://api.namecheap.com/xml.response">
+  <Errors>
+    <Error Number="1011150">Invalid request IP: 77.239.161.0</Error>
+  </Errors>
+  <Warnings />
+  <RequestedCommand />
+  <Server>Server 1360233661</Server>
+  <GMTTimeDifference>--5:00</GMTTimeDifference>
+  <ExecutionTime>0</ExecutionTime>
+</ApiResponse>
+2026-03-01 22:42:07 [ERROR]: Unexpected response from NameCheap API
