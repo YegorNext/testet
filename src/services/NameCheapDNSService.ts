@@ -15,12 +15,7 @@ export class NamecheapDNSService {
   private readonly username = namecheapConfig.userName;
   private readonly baseUrl = namecheapConfig.apiUrl;
 
-  public async setARecord(
-    domain: string,
-    ip: string,
-    hostName: string = '@',
-    ttl: number = 1800
-  ): Promise<SetARecordResult> {
+  public async setARecord(domain: string, ip: string, hostName: string = '@', ttl: number = 1800): Promise<SetARecordResult> {
     const { sld, tld } = this.splitDomain(domain);
     const params: Record<string, string> = {
       apiuser: this.apiUser,

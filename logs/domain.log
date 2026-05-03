@@ -16,3 +16,27 @@
   <ExecutionTime>0</ExecutionTime>
 </ApiResponse>
 2026-03-01 22:42:07 [ERROR]: Unexpected response from NameCheap API
+2026-05-04 01:36:30 [INFO]: NameCheap API response for domain check: <?xml version="1.0" encoding="utf-8"?>
+<ApiResponse Status="ERROR" xmlns="http://api.namecheap.com/xml.response">
+  <Errors>
+    <Error Number="1011150">Invalid request IP: 77.239.162.37</Error>
+  </Errors>
+  <Warnings />
+  <RequestedCommand />
+  <Server>Server 1360233658</Server>
+  <GMTTimeDifference>--4:00</GMTTimeDifference>
+  <ExecutionTime>0</ExecutionTime>
+</ApiResponse>
+2026-05-04 01:36:30 [ERROR]: Unexpected response from NameCheap API
+2026-05-04 01:39:34 [INFO]: NameCheap API response for domain check: <?xml version="1.0" encoding="utf-8"?>
+<ApiResponse Status="ERROR" xmlns="http://api.namecheap.com/xml.response">
+  <Errors>
+    <Error Number="1011150">Invalid request IP: 77.239.162.37</Error>
+  </Errors>
+  <Warnings />
+  <RequestedCommand />
+  <Server>Server 1360233661</Server>
+  <GMTTimeDifference>--4:00</GMTTimeDifference>
+  <ExecutionTime>0</ExecutionTime>
+</ApiResponse>
+2026-05-04 01:39:34 [ERROR]: Unexpected response from NameCheap API

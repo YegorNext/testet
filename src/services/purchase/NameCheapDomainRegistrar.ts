@@ -27,6 +27,8 @@ export class NameCheapDomainRegistrar implements IDomainRegistrar {
 
     const xml = await this.purchase(domain);
 
+    console.log(`Raw XML response from NameCheap API: ${xml}`);
+
     return this.parser.parseRegistered(xml);
   }
 
