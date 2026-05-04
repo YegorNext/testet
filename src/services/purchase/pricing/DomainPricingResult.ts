@@ -1,7 +1,6 @@
 export interface DomainPricingResult {
   domain: string;
-  currentPrice?: number;
-  renewalPrice?: number;
+  type: string;
   errors: string[];
   rawXml: string;
 }

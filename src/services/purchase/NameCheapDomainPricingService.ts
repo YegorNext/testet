@@ -1,6 +1,9 @@
 import { NamecheapHttpClient } from './dns/NamecheapHttpClient';
 import { NamecheapPricingRequestBuilder } from './pricing/NamecheapPricingRequestBuilder';
-import { NamecheapPricingResponseParser } from './pricing/NamecheapPricingResponseParser';
+import {
+  NamecheapPricingResponseParser,
+} from './pricing/NamecheapPricingResponseParser';
+
 import { DomainPricingResult } from './pricing/DomainPricingResult';
 
 export class NameCheapDomainPricingService {
@@ -30,21 +33,22 @@ export class NameCheapDomainPricingService {
       if (!parsed) {
         return {
           domain,
-          errors: ['Failed to parse pricing'],
+          type: '',
+          errors: ['Failed to parse pricing response'],
           rawXml: xml,
         };
       }
 
       return {
         domain,
-        currentPrice: parsed.currentPrice,
-        renewalPrice: parsed.renewalPrice,
+        type: parsed.type ?? '',
         errors: [],
         rawXml: xml,
       };
     } catch (error: any) {
       return {
         domain,
+        type: '',
         errors: [error.message],
         rawXml: '',
       };

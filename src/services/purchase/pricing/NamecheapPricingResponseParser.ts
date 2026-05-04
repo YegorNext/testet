@@ -1,21 +1,26 @@
 import { parseStringPromise } from 'xml2js';
 
+export interface ParsedPricing {
+  type?: string;
+}
+
 export class NamecheapPricingResponseParser {
-  async parse(xml: string) {
+  async parse(xml: string): Promise<ParsedPricing | null> {
     const parsed = await parseStringPromise(xml, {
       explicitArray: false,
     });
 
-    const product =
-      parsed?.ApiResponse?.CommandResponse?.Pricing?.ProductType?.Domain?.Product?.$;
+    const result =
+      parsed?.ApiResponse?.CommandResponse?.UserGetPricingResult;
 
-    if (!product) {
+    if (!result) {
       return null;
     }
 
+    const type = result?.ProductType?.$?.Name;
+
     return {
-      currentPrice: parseFloat(product.CurrentPrice),
-      renewalPrice: parseFloat(product.RenewalPrice),
+      type,
     };
   }
 }

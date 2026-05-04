@@ -1,5 +1,13 @@
 export class NamecheapPricingRequestBuilder {
-  static build(apiUser: string, apiKey: string, userName: string, clientIp: string, domain: string): Record<string, string> {
+  static build(
+    apiUser: string,
+    apiKey: string,
+    userName: string,
+    clientIp: string,
+    domain: string
+  ): Record<string, string> {
+    const tld = domain.split('.').pop();
+
     return {
       ApiUser: apiUser,
       ApiKey: apiKey,
@@ -7,7 +15,7 @@ export class NamecheapPricingRequestBuilder {
       ClientIp: clientIp,
       Command: 'namecheap.users.getPricing',
       ProductType: 'DOMAIN',
-      ProductName: domain,
+      ProductName: tld!,
     };
   }
 }
