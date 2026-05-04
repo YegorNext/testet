@@ -72,27 +72,28 @@ export class DomainController {
     }
   };
 
-  getDomainPricing = async (req: Request, res: Response) => {
-    const { domain } = req.body;
+getDomainPricing = async (req: Request, res: Response) => {
+  const { domain } = req.body;
 
-    if (!domain) {
-      return res.status(400).json({
-        message: 'Domain is required.',
-      });
-    }
+  if (!domain) {
+    return res.status(400).json({
+      message: 'Domain is required.',
+    });
+  }
 
-    try {
-      const pricingResult = await this.pricingService.getPricing(domain);
+  try {
+    const result = await this.pricingService.getPricing(domain);
 
-      return res.json({
-        domain,
-        pricing: pricingResult,
-      });
-    } catch (error: any) {
-      return res.status(500).json({
-        domain,
-        message: error.message,
-      });
-    }
-  };
+    return res.json({
+      domain: result.domain,
+      price: result.pricing,
+      errors: result.errors,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      domain,
+      message: error.message,
+    });
+  }
+};
 }
