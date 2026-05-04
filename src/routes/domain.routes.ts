@@ -22,6 +22,15 @@ router.post('/namecheap/purchase', async (req, res, next) => {
   }
 });
 
+router.post('/namecheap/pricing', async (req, res, next) => {
+  try {
+    await controller.getDomainPricing(req, res);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 router.use(errorHandler);
 
 export default router;

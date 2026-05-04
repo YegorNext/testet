@@ -6,10 +6,22 @@ import { NamecheapHttpClient } from '../services/purchase/dns/NamecheapHttpClien
 import { NamecheapResponseParser } from '../services/purchase/dns/NamecheapResponseParser';
 import { namecheapConfig } from '../config/namecheap.config';
 
+import { NameCheapDomainPricingService } from '../services/purchase/NameCheapDomainPricingService';
+import { NamecheapPricingResponseParser } from '../services/purchase/pricing/NamecheapPricingResponseParser';
+
+
 export class DomainController {
   private registrar = new NameCheapDomainRegistrar();
 
   private dnsService = new NamecheapDNSService(new NamecheapHttpClient(namecheapConfig.apiUrl), new NamecheapResponseParser());
+  private pricingService = new NameCheapDomainPricingService(
+    new NamecheapHttpClient(namecheapConfig.apiUrl),
+    new NamecheapPricingResponseParser(),
+    namecheapConfig.apiUser,
+    namecheapConfig.apiKey,
+    namecheapConfig.userName,
+    namecheapConfig.clientIp
+  );
 
   addARecordOnNamecheap = async (req: Request, res: Response) => {
     const { domain, ip, host } = req.body;
@@ -55,6 +67,30 @@ export class DomainController {
       return res.status(500).json({
         domain,
         registered: false,
+        message: error.message,
+      });
+    }
+  };
+
+  getDomainPricing = async (req: Request, res: Response) => {
+    const { domain } = req.body;
+
+    if (!domain) {
+      return res.status(400).json({
+        message: 'Domain is required.',
+      });
+    }
+
+    try {
+      const pricing = await this.pricingService.getPricing(domain);
+
+      return res.json({
+        domain,
+        pricing,
+      });
+    } catch (error: any) {
+      return res.status(500).json({
+        domain,
         message: error.message,
       });
     }
