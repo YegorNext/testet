@@ -1,13 +1,9 @@
-import { namecheapConfig } from '../config/namecheap.config';
+import { namecheapConfig } from '../../../config/namecheap.config';
+
 import { DomainUtils } from './DomainUtils';
 
 export class NamecheapRequestBuilder {
-  static buildARecord(
-    domain: string,
-    ip: string,
-    hostName: string = '@',
-    ttl: number = 1800
-  ): Record<string, string> {
+  static buildARecord(domain: string, ip: string, hostName: string = '@', ttl: number = 1800): Record<string, string> {
     const { sld, tld } = DomainUtils.split(domain);
 
     return {

@@ -1,7 +1,5 @@
-import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
 import { namecheapConfig } from '../../../config/namecheap.config';
-import { domainLogger } from '../../../utils/logger';
 
 export class NameCheapDomainChecker {
   public async checkAvailability(domain: string): Promise<boolean> {
@@ -10,7 +8,7 @@ export class NameCheapDomainChecker {
       const response = await fetch(url).then(r => r.text()); 
       return this.parseDomainAvailability(response);
     } catch (error: any) {
-      domainLogger.error(`Error checking domain ${domain}: ${error.message}`);
+      console.error(`Error checking domain ${domain}: ${error.message}`);
       return false;
     }
   }
@@ -21,7 +19,7 @@ export class NameCheapDomainChecker {
 
   private async parseDomainAvailability(xml: string): Promise<boolean> {
 
-      domainLogger.info(`NameCheap API response for domain check: ${xml}`);
+      console.log(`NameCheap API response for domain check: ${xml}`);
 
 
     const result = await parseStringPromise(xml, { explicitArray: false }); 
@@ -29,7 +27,7 @@ export class NameCheapDomainChecker {
     const domainCheckResult = result?.ApiResponse?.CommandResponse?.DomainCheckResult?.$;
 
     if (!domainCheckResult || typeof domainCheckResult.Available === 'undefined') {
-      domainLogger.error('Unexpected response from NameCheap API');
+      console.error('Unexpected response from NameCheap API');
       return false;
     }
 
