@@ -5,27 +5,40 @@ export class NamecheapPricingMapper {
     const root =
       parsed?.ApiResponse?.CommandResponse?.UserGetPricingResult;
 
-    const categories = root?.ProductType?.ProductCategory;
+    const categoriesRaw = root?.ProductType?.ProductCategory;
 
-    if (!categories) return null;
+    const categories = Array.isArray(categoriesRaw)
+      ? categoriesRaw
+      : categoriesRaw
+        ? [categoriesRaw]
+        : [];
 
-    const getPrice = (name: string) => {
+    if (!categories.length) return null;
+
+    const getPrice = (name: string): number | undefined => {
       const category = categories.find((c: any) => c?.$?.Name === name);
       const product = category?.Product;
 
-      const price = product?.Price;
+      const pricesRaw = product?.Price;
 
-      const firstYear = Array.isArray(price)
-        ? price.find((p: any) => p?.$?.Duration === '1')
-        : price;
+      const prices = Array.isArray(pricesRaw)
+        ? pricesRaw
+        : pricesRaw
+          ? [pricesRaw]
+          : [];
 
-      return firstYear?.$?.Price
-        ? parseFloat(firstYear.$.Price)
-        : undefined;
+      const year1 = prices.find(
+        (p: any) => p?.$?.Duration === '1'
+      );
+
+      const value = year1?.$?.Price;
+
+      return value ? parseFloat(value) : undefined;
     };
 
     const register1y = getPrice('register');
-    if (!register1y) return null;
+
+    if (register1y === undefined) return null;
 
     return {
       register1y,
