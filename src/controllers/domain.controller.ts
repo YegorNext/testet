@@ -82,11 +82,11 @@ export class DomainController {
     }
 
     try {
-      const pricing = await this.pricingService.getPricing(domain);
+      const pricingResult = await this.pricingService.getPricing(domain);
 
       return res.json({
         domain,
-        pricing,
+        pricing: pricingResult,
       });
     } catch (error: any) {
       return res.status(500).json({
