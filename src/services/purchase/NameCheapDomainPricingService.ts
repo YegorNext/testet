@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
-import { prisma } from '../../utils/prisma'; 
-import { domainLogger } from '../../utils/logger';
-import { NamecheapAccountEntity } from '../entities/../../entities/namecheap-account.entity';
+//import { prisma } from '../../utils/prisma'; 
+//import { domainLogger } from '../../utils/logger';
+//import { NamecheapAccountEntity } from '../entities/../../entities/namecheap-account.entity';
 
 export interface DomainPricingResult {
   domain: string;
@@ -12,6 +12,7 @@ export interface DomainPricingResult {
   rawXml: string;
 }
 
+/*
 export class NameCheapDomainPricingService {
   private account!: NamecheapAccountEntity;
 
@@ -70,4 +71,4 @@ export class NameCheapDomainPricingService {
       return { domain, errors: [error.message], rawXml: '' };
     }
   }
-}
+}*/

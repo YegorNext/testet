@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { parseStringPromise } from 'xml2js';
-import { namecheapConfig } from '../config/namecheap.config';
+import { NamecheapHttpClient } from './purchase/dns/NamecheapHttpClient';
+import { NamecheapRequestBuilder } from './purchase/dns/NamecheapRequestBuilder';
+import { NamecheapResponseParser } from './purchase/dns/NamecheapResponseParser';
 
 export interface SetARecordResult {
   isSuccess: boolean;
@@ -9,58 +9,27 @@ export interface SetARecordResult {
 }
 
 export class NamecheapDNSService {
-  private readonly apiUser = namecheapConfig.apiUser;
-  private readonly apiKey = namecheapConfig.apiKey;
-  private readonly clientIp = namecheapConfig.clientIp;
-  private readonly username = namecheapConfig.userName;
-  private readonly baseUrl = namecheapConfig.apiUrl;
+  constructor(private readonly http: NamecheapHttpClient, private readonly parser: NamecheapResponseParser) {}
 
-    public async setARecord(domain: string, ip: string, hostName: string = '@', ttl: number = 1800): Promise<SetARecordResult> {
-    const { sld, tld } = this.splitDomain(domain);
-
-    const params: Record<string, string> = {
-      apiuser: this.apiUser,
-      apikey: this.apiKey,
-      username: this.username,
-      ClientIp: this.clientIp,
-      Command: 'namecheap.domains.dns.setHosts',
-      SLD: sld,
-      TLD: tld,
-      HostName1: hostName,
-      RecordType1: 'A',
-      Address1: ip,
-      TTL1: ttl.toString(),
-    };
-
+  public async setARecord(domain: string, ip: string, hostName: string = '@', ttl: number = 1800): Promise<SetARecordResult> {
     try {
-      console.log('[NamecheapDNS] Request params:', params);
+      const params = NamecheapRequestBuilder.buildARecord(domain, ip, hostName, ttl);
 
-      const response = await axios.get(this.baseUrl, { params });
+      const responseXml = await this.http.get(params);
 
-      console.log('[NamecheapDNS] Raw XML response:', response.data);
+      const isSuccess = await this.parser.parseSetARecord(responseXml);
 
-      const parsed = await parseStringPromise(response.data);
-
-      console.log('[NamecheapDNS] Parsed response:', JSON.stringify(parsed, null, 2));
-
-      const isSuccess =
-        parsed.ApiResponse?.CommandResponse?.[0]?.DomainDNSSetHostsResult?.[0]?.$.IsSuccess === 'true';
-
-      console.log('[NamecheapDNS] isSuccess:', isSuccess);
-
-      return { isSuccess, errors: [], rawXml: response.data };
+      return {
+        isSuccess,
+        errors: [],
+        rawXml: responseXml,
+      };
     } catch (err: any) {
-      console.error('[NamecheapDNS] ERROR:', err.message);
-
-      return { isSuccess: false, errors: [err.message], rawXml: '' };
+      return {
+        isSuccess: false,
+        errors: [err.message],
+        rawXml: '',
+      };
     }
-  }
-
-  private splitDomain(domain: string): { sld: string; tld: string } {
-    const parts = domain.split('.');
-    if (parts.length < 2) throw new Error('Incorrect domain');
-    const tld = parts.pop()!;
-    const sld = parts.join('.');
-    return { sld, tld };
   }
 }
